@@ -10,27 +10,35 @@
 ### User Story 1 - Create and Complete Tasks (Priority: P1)
 
 The user opens the app and is presented with their task list. They can add a new task by
-typing a title and pressing enter (or tapping an add button). Each task shows its title and
-a checkbox. Clicking the checkbox marks the task as done. This is the core loop: add a task,
-do the work, mark it done.
+typing a title, optionally selecting a priority (Low, Medium, or High), and pressing enter
+(or tapping an add button). Each task shows its title, priority indicator, and a checkbox.
+Clicking the checkbox marks the task as done. This is the core loop: add a task with a
+priority, do the work, mark it done.
 
 **Why this priority**: Creating and completing tasks is the fundamental purpose of a todo
 manager. Without this, no other story delivers value. It is the MVP.
 
-**Independent Test**: Open the app with an empty list, add three tasks, mark two as complete,
-and verify the completed tasks are visually distinguished from the open one. No other feature
-is required.
+**Independent Test**: Open the app with an empty list, add three tasks with different
+priorities (one Low, one Medium, one High), mark two as complete, and verify the completed
+tasks are visually distinguished from the open one and each task displays its priority.
+No other feature is required.
 
 **Acceptance Scenarios**:
 
-1. **Given** the app is open with an empty list, **When** the user types "Buy milk" and submits,
-   **Then** a new task titled "Buy milk" appears in the list with an unchecked state.
-2. **Given** a task exists in the list, **When** the user checks its checkbox,
+1. **Given** the app is open with an empty list, **When** the user types "Buy milk", selects
+   "Medium" priority, and submits, **Then** a new task titled "Buy milk" appears with a Medium
+   priority indicator and an unchecked state.
+2. **Given** the user adds a task without selecting a priority, **When** the task is created,
+   **Then** the task defaults to Medium priority.
+3. **Given** a task exists in the list, **When** the user checks its checkbox,
    **Then** the task is marked as complete and visually indicated as done (e.g., strikethrough).
-3. **Given** a completed task, **When** the user unchecks its checkbox,
+4. **Given** a completed task, **When** the user unchecks its checkbox,
    **Then** the task returns to the active (incomplete) state.
-4. **Given** a task in the list, **When** the user submits an empty title,
+5. **Given** a task in the list, **When** the user submits an empty title,
    **Then** the task is not created and an inline error is shown.
+6. **Given** tasks with different priorities exist, **When** the user views the list,
+   **Then** each task clearly displays its priority level (Low, Medium, or High) in a
+   visually distinguishable way (e.g., colour label, badge, or icon).
 
 ---
 
@@ -114,17 +122,22 @@ only one task is shown. Switch to "Completed" — verify two tasks are shown. Sw
   dark text). No dark theme variant is provided.
 - **FR-010**: The system MUST NOT require user authentication or an account — it is single-user
   and personal.
+- **FR-011**: Users MUST be able to assign a priority of Low, Medium, or High to a task at
+  creation time. Priority MUST default to Medium when not explicitly chosen.
+- **FR-012**: The system MUST display each task's priority visually in a way that distinguishes
+  all three levels at a glance (e.g., colour-coded badge, icon, or label).
 
 ### Key Entities
 
 - **Task**: The fundamental unit of work. Has a title (text), a completion status (boolean),
-  and a creation timestamp. Tasks are ordered by creation time (newest last) by default.
+  a priority level (Low / Medium / High, default Medium), and a creation timestamp. Tasks are
+  ordered by creation time (oldest first) by default.
 
 ### Assumptions
 
 - Single device, single user: no sync, no accounts, no cloud storage is required.
 - Default sort order is creation order (oldest first); no drag-to-reorder in this version.
-- No due dates, priorities, labels, or subtasks in this version — these are out of scope.
+- No due dates, labels, or subtasks in this version — these are out of scope.
 - Data is stored locally on the user's device using the most appropriate persistence
   mechanism for the chosen platform (determined at planning stage).
 
